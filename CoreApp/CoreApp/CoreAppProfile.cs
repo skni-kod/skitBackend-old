@@ -19,5 +19,10 @@ public class CoreAppProfile : Profile
         CreateMap<Section, ReadSectionDto>();
 
         CreateMap<CreateSectionDto, Section>();
+
+        CreateMap<Project, ReadProjectDto>()
+            .ForMember(p => p.Section, c => c.MapFrom(s => s.Section.Title));
+
+        CreateMap<CreateProjectDto, Project>();
     }
 }

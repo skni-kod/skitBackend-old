@@ -15,16 +15,23 @@ public class SectionController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<ReadRoleDto>> GetAll()
+    public ActionResult<List<ReadSectionDto>> GetAll()
     {
         var result = _service.GetAll();
         return Ok(result);
     }
 
     [HttpGet("{id}")]
-    public ActionResult<ReadRoleDto> GetById([FromRoute] int id)
+    public ActionResult<ReadSectionDto> GetById([FromRoute] int id)
     {
         var result = _service.GetById(id);
+        return Ok(result);
+    }
+
+    [HttpGet("{id}/project")]
+    public ActionResult<List<ReadProjectDto>> GetAllProjects([FromRoute] int id)
+    {
+        var result = _service.GetAllProjects(id);
         return Ok(result);
     }
 
@@ -39,6 +46,6 @@ public class SectionController : ControllerBase
     public ActionResult Create([FromBody] CreateSectionDto dto)
     {
         var id = _service.Create(dto);
-        return Created($"/api/role/{id}", null);
+        return Created($"/api/section/{id}", null);
     }
 }

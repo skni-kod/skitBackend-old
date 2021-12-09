@@ -2,6 +2,7 @@
 using CoreApp.Data;
 using CoreApp.Data.Dtos;
 using CoreApp.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoreApp.Services;
 public interface ISectionService
@@ -10,6 +11,7 @@ public interface ISectionService
     public void Delete(int id);
     public ReadSectionDto GetById(int id);
     public int Create(CreateSectionDto dto);
+    List<ReadProjectDto> GetAllProjects(int id);
 }
 
 public class SectionService : ISectionService
@@ -70,5 +72,21 @@ public class SectionService : ISectionService
         _context.SaveChanges();
 
         return section.Id;
+    }
+
+    public List<ReadProjectDto> GetAllProjects(int id)
+    {
+        var section = _context
+            .Sections
+            .Include(s => s.Projects)
+            .FirstOrDefault(s => s.Id == id);
+
+        if(section == null) throw new Exception();
+
+        var projects = section.Projects.ToList();
+
+        var result = _mapper.Map<List<ReadProjectDto>>(projects);
+
+        return result;
     }
 }

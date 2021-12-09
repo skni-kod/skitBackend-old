@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CoreApp.Migrations
 {
     [DbContext(typeof(CoreAppDbContext))]
-    [Migration("20211208203924_InitialMigration")]
+    [Migration("20211209223923_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,17 +85,12 @@ namespace CoreApp.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int?>("StudentId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("StudentId");
 
                     b.ToTable("Roles");
                 });
@@ -130,7 +125,6 @@ namespace CoreApp.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("DiscordName")
@@ -153,17 +147,18 @@ namespace CoreApp.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("integer");
 
                     b.Property<string>("StudiesTag")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("YearOfStudies")
+                    b.Property<int?>("YearOfStudies")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Students");
                 });
@@ -198,16 +193,23 @@ namespace CoreApp.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("CoreApp.Data.Models.Role", b =>
+            modelBuilder.Entity("CoreApp.Data.Models.Student", b =>
                 {
-                    b.HasOne("CoreApp.Data.Models.Student", null)
-                        .WithMany("Role")
-                        .HasForeignKey("StudentId");
+                    b.HasOne("CoreApp.Data.Models.Role", "Role")
+                        .WithMany("Students")
+                        .HasForeignKey("RoleId");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("CoreApp.Data.Models.Project", b =>
                 {
                     b.Navigation("ProjectParticipant");
+                });
+
+            modelBuilder.Entity("CoreApp.Data.Models.Role", b =>
+                {
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("CoreApp.Data.Models.Section", b =>
@@ -218,8 +220,6 @@ namespace CoreApp.Migrations
             modelBuilder.Entity("CoreApp.Data.Models.Student", b =>
                 {
                     b.Navigation("ProjectParticipant");
-
-                    b.Navigation("Role");
                 });
 #pragma warning restore 612, 618
         }

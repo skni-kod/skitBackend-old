@@ -12,6 +12,6 @@ public class Student
     public string? Description { get; set; }
 
     public int? RoleId { get; set; }
-    public virtual List<Role>? Role { get; set; }
+    public virtual Role? Role { get; set; }
     public virtual List<ProjectParticipant>? ProjectParticipant { get; set; }
 }

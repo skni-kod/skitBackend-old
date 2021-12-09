@@ -1,35 +1,33 @@
 ﻿using CoreApp.Data.Dtos;
-using CoreApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreApp.Controllers;
-[Route("/api/role")]
-[ApiController]
-public class RoleController : ControllerBase
-{
-    private readonly IRoleService _service;
 
-    public RoleController(IRoleService service)
+public class ProjectController : ControllerBase
+{
+    private readonly IProjectService _service;
+
+    public ProjectController(IProjectService service)
     {
         _service = service;
     }
 
     [HttpGet]
-    public ActionResult<List<ReadRoleDto>> GetAll()
+    public ActionResult<List<ReadProjectDto>> GetAll()
     {
         var result = _service.GetAll();
         return Ok(result);
     }
 
     [HttpGet("{id}")]
-    public ActionResult<ReadRoleDto> GetById([FromRoute] int id)
+    public ActionResult<ReadProjectDto> GetById([FromRoute] int id)
     {
         var result = _service.GetById(id);
         return Ok(result);
     }
 
     [HttpGet("{id}/student")]
-    public ActionResult<List<ReadStudentDto>> GetAllStudents([FromRoute] int id)
+    public ActionResult<List<ReadProjectDto>> GetAllStudents([FromRoute] int id)
     {
         var result = _service.GetAllStudents(id);
         return Ok(result);
@@ -43,9 +41,9 @@ public class RoleController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult Create([FromBody]CreateRoleDto dto)
+    public ActionResult Create([FromBody] CreateRoleDto dto)
     {
         var id = _service.Create(dto);
-        return Created($"/api/role/{id}", null);
+        return Created($"/api/student/{id}", null);
     }
 }

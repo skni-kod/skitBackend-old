@@ -6,5 +6,5 @@ public class Role
     public string Title { get; set; }
     public string? Description { get; set; }
 
-    public virtual Student? Student { get; set; }
+    public virtual List<Student>? Students { get; set; }
 }

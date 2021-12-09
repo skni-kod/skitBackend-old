@@ -2,6 +2,7 @@
 using CoreApp.Data;
 using CoreApp.Data.Dtos;
 using CoreApp.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoreApp.Services;
 public interface IRoleService
@@ -10,6 +11,7 @@ public interface IRoleService
     public ReadRoleDto GetById(int id);
     public void Delete(int id);
     public int Create(CreateRoleDto dto);
+    List<ReadStudentDto> GetAllStudents(int id);
 }
 
 public class RoleService : IRoleService
@@ -70,6 +72,22 @@ public class RoleService : IRoleService
         _context.SaveChanges();
 
         return role.Id;
+    }
+
+    public List<ReadStudentDto> GetAllStudents(int id)
+    {
+        var role = _context
+            .Roles
+            .Include(r => r.Students)
+            .FirstOrDefault(r => r.Id == id);
+
+        if(role == null) throw new Exception();
+
+        var students = role.Students.ToList();
+
+        var result = _mapper.Map<List<ReadStudentDto>>(students);
+
+        return result;
     }
 }
 

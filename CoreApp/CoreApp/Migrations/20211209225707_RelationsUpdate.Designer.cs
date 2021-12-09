@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CoreApp.Migrations
 {
     [DbContext(typeof(CoreAppDbContext))]
-    [Migration("20211208212515_NullableAdd")]
-    partial class NullableAdd
+    [Migration("20211209225707_RelationsUpdate")]
+    partial class RelationsUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,8 +45,7 @@ namespace CoreApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SectionId")
-                        .IsUnique();
+                    b.HasIndex("SectionId");
 
                     b.ToTable("Projects");
                 });
@@ -85,17 +84,12 @@ namespace CoreApp.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int?>("StudentId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("StudentId");
 
                     b.ToTable("Roles");
                 });
@@ -163,14 +157,16 @@ namespace CoreApp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RoleId");
+
                     b.ToTable("Students");
                 });
 
             modelBuilder.Entity("CoreApp.Data.Models.Project", b =>
                 {
                     b.HasOne("CoreApp.Data.Models.Section", "Section")
-                        .WithOne("Project")
-                        .HasForeignKey("CoreApp.Data.Models.Project", "SectionId")
+                        .WithMany("Projects")
+                        .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -196,11 +192,13 @@ namespace CoreApp.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("CoreApp.Data.Models.Role", b =>
+            modelBuilder.Entity("CoreApp.Data.Models.Student", b =>
                 {
-                    b.HasOne("CoreApp.Data.Models.Student", null)
-                        .WithMany("Role")
-                        .HasForeignKey("StudentId");
+                    b.HasOne("CoreApp.Data.Models.Role", "Role")
+                        .WithMany("Students")
+                        .HasForeignKey("RoleId");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("CoreApp.Data.Models.Project", b =>
@@ -208,16 +206,19 @@ namespace CoreApp.Migrations
                     b.Navigation("ProjectParticipant");
                 });
 
+            modelBuilder.Entity("CoreApp.Data.Models.Role", b =>
+                {
+                    b.Navigation("Students");
+                });
+
             modelBuilder.Entity("CoreApp.Data.Models.Section", b =>
                 {
-                    b.Navigation("Project");
+                    b.Navigation("Projects");
                 });
 
             modelBuilder.Entity("CoreApp.Data.Models.Student", b =>
                 {
                     b.Navigation("ProjectParticipant");
-
-                    b.Navigation("Role");
                 });
 #pragma warning restore 612, 618
         }
