@@ -5,6 +5,10 @@ namespace CoreApp.Data;
 
 public class CoreAppDbContext : DbContext
 {
+    public CoreAppDbContext(DbContextOptions<CoreAppDbContext> options) : base(options)
+    {
+        
+    }
     public DbSet<Project> Projects { get; set; }
     public DbSet<ProjectParticipant> ProjectParticipants { get; set; }
     public DbSet<Role> Roles { get; set; }
@@ -63,6 +67,9 @@ public class CoreAppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("DefaultDatabase");
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseNpgsql("DefaultDatabase");
+        }
     }
 }

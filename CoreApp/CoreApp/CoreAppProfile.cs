@@ -8,8 +8,7 @@ public class CoreAppProfile : Profile
 {
     public CoreAppProfile()
     {
-        CreateMap<CreateStudentDto, Student>()
-            .ReverseMap();
+        CreateMap<CreateStudentDto, Student>();
 
         CreateMap<Student, ReadStudentDto>();
 
