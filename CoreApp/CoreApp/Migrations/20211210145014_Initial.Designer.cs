@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CoreApp.Migrations
 {
     [DbContext(typeof(CoreAppDbContext))]
-    [Migration("20211209223923_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20211210145014_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,33 +45,9 @@ namespace CoreApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SectionId")
-                        .IsUnique();
+                    b.HasIndex("SectionId");
 
                     b.ToTable("Projects");
-                });
-
-            modelBuilder.Entity("CoreApp.Data.Models.ProjectParticipant", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("ProjectParticipants");
                 });
 
             modelBuilder.Entity("CoreApp.Data.Models.Role", b =>
@@ -147,9 +123,6 @@ namespace CoreApp.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("StudiesTag")
                         .HasColumnType("text");
 
@@ -158,68 +131,83 @@ namespace CoreApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
-
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("ProjectStudent", b =>
+                {
+                    b.Property<int>("ProjectsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ProjectsId", "StudentsId");
+
+                    b.HasIndex("StudentsId");
+
+                    b.ToTable("ProjectStudent");
+                });
+
+            modelBuilder.Entity("RoleStudent", b =>
+                {
+                    b.Property<int>("RolesId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("RolesId", "StudentsId");
+
+                    b.HasIndex("StudentsId");
+
+                    b.ToTable("RoleStudent");
                 });
 
             modelBuilder.Entity("CoreApp.Data.Models.Project", b =>
                 {
                     b.HasOne("CoreApp.Data.Models.Section", "Section")
-                        .WithOne("Project")
-                        .HasForeignKey("CoreApp.Data.Models.Project", "SectionId")
+                        .WithMany("Projects")
+                        .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Section");
                 });
 
-            modelBuilder.Entity("CoreApp.Data.Models.ProjectParticipant", b =>
+            modelBuilder.Entity("ProjectStudent", b =>
                 {
-                    b.HasOne("CoreApp.Data.Models.Project", "Project")
-                        .WithMany("ProjectParticipant")
-                        .HasForeignKey("ProjectId")
+                    b.HasOne("CoreApp.Data.Models.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoreApp.Data.Models.Student", "Student")
-                        .WithMany("ProjectParticipant")
-                        .HasForeignKey("StudentId")
+                    b.HasOne("CoreApp.Data.Models.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RoleStudent", b =>
+                {
+                    b.HasOne("CoreApp.Data.Models.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Project");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("CoreApp.Data.Models.Student", b =>
-                {
-                    b.HasOne("CoreApp.Data.Models.Role", "Role")
-                        .WithMany("Students")
-                        .HasForeignKey("RoleId");
-
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("CoreApp.Data.Models.Project", b =>
-                {
-                    b.Navigation("ProjectParticipant");
-                });
-
-            modelBuilder.Entity("CoreApp.Data.Models.Role", b =>
-                {
-                    b.Navigation("Students");
+                    b.HasOne("CoreApp.Data.Models.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CoreApp.Data.Models.Section", b =>
                 {
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("CoreApp.Data.Models.Student", b =>
-                {
-                    b.Navigation("ProjectParticipant");
+                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }

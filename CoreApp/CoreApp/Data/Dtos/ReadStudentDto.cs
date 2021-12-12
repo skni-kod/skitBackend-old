@@ -14,5 +14,5 @@ public class ReadStudentDto
 
     public int? RoleId { get; set; }
     public virtual List<Role>? Role { get; set; }
-    public virtual List<ProjectParticipant>? ProjectParticipant { get; set; }
+    public virtual List<Project>? Projects { get; set; }
 }

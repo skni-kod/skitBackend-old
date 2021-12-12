@@ -76,6 +76,17 @@ public class ProjectService : IProjectService
 
     public List<ReadStudentDto> GetAllStudents(int id)
     {
-        throw new NotImplementedException();
+        var project = _context
+            .Projects
+            .Include(p => p.Students)
+            .FirstOrDefault(p => p.Id == id);
+
+        if(project == null) throw new Exception();
+
+        var students = project.Students.ToList();
+
+        var result = _mapper.Map<List<ReadStudentDto>>(students);
+
+        return result;
     }
 }

@@ -12,6 +12,9 @@ public interface IStudentService
     public ReadStudentDto GetById(int id);
     public IEnumerable<ReadStudentDto> GetAll();
     void Delete(int id);
+    List<ReadStudentDto> GetAllNoProject();
+    void AddProjectToStudent(int studentId, int projectId);
+    void AddRoleToStudent(int studentId, int roleId);
 }
 
 public class StudentService : IStudentService
@@ -38,8 +41,8 @@ public class StudentService : IStudentService
     {
         var student = _context
             .Students
-            .Include(r => r.Role)
-            .Include(r => r.ProjectParticipant)
+            //.Include(r => r.Role)
+            //.Include(r => r.Projects)
             .FirstOrDefault(s => s.Id == id);
 
         if (student == null) throw new Exception();
@@ -52,8 +55,8 @@ public class StudentService : IStudentService
     {
         var students = _context
             .Students
-            .Include(r => r.Role)
-            .Include(r => r.ProjectParticipant)
+            //.Include(r => r.Role)
+            //.Include(r => r.Projects)
             .ToList();
 
         var result = _mapper.Map<IEnumerable<ReadStudentDto>>(students);
@@ -69,6 +72,56 @@ public class StudentService : IStudentService
         if (student == null) throw new Exception();
 
         _context.Students.Remove(student);
+        _context.SaveChanges();
+    }
+
+    public List<ReadStudentDto> GetAllNoProject()
+    {
+        var students = _context
+            .Students
+            .Where(s => s.Projects == null)
+            .ToList();
+
+        var result = _mapper.Map<List<ReadStudentDto>>(students);
+
+        return result;
+    }
+
+    public void AddProjectToStudent(int studentId, int projectId)
+    {
+        var student = _context
+            .Students
+            .FirstOrDefault(s => s.Id == studentId);
+
+        if(student == null) throw new Exception();
+
+        var project = _context
+            .Projects
+            .FirstOrDefault(p => p.Id == projectId);
+
+        if (project == null) throw new Exception();
+
+        student.Projects.Add(project);
+
+        _context.SaveChanges();
+    }
+
+    public void AddRoleToStudent(int studentId, int roleId)
+    {
+        var student = _context
+            .Students
+            .FirstOrDefault(s => s.Id == studentId);
+
+        if (student == null) throw new Exception();
+
+        var role = _context
+            .Roles
+            .FirstOrDefault(r => r.Id == roleId);
+
+        if (role == null) throw new Exception();
+
+        student.Roles.Add(role);
+
         _context.SaveChanges();
     }
 }

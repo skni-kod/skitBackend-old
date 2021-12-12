@@ -29,11 +29,32 @@ public class StudentController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("noproject")]
+    public ActionResult<List<ReadStudentDto>> GetAllNoProject()
+    {
+        var result = _service.GetAllNoProject();
+        return Ok(result);
+    }
+
     [HttpPost]
     public ActionResult CreateStudent([FromBody]CreateStudentDto dto)
     {
         var id = _service.Create(dto);
         return Created($"/api/student/{id}", null);
+    }
+
+    [HttpPost("{studentId}/project/{projectId}")]
+    public ActionResult AddProjectToStudent([FromRoute] int studentId, [FromRoute] int projectId)
+    {
+        _service.AddProjectToStudent(studentId, projectId);
+        return NoContent();
+    }
+
+    [HttpPost("{studentId}/role/{roleId}")]
+    public ActionResult AddRoleToStudent([FromRoute] int studentId, [FromRoute] int roleId)
+    {
+        _service.AddRoleToStudent(studentId, roleId);
+        return NoContent();
     }
 
     [HttpDelete("{id}")]

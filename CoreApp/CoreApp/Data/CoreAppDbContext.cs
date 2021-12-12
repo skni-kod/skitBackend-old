@@ -10,7 +10,6 @@ public class CoreAppDbContext : DbContext
         
     }
     public DbSet<Project> Projects { get; set; }
-    public DbSet<ProjectParticipant> ProjectParticipants { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<Section> Sections { get; set; }
     public DbSet<Student> Students { get; set; }
@@ -29,14 +28,6 @@ public class CoreAppDbContext : DbContext
         modelBuilder.Entity<Section>()
             .Property(s => s.Title)
             .HasMaxLength(255)
-            .IsRequired();
-
-        modelBuilder.Entity<ProjectParticipant>()
-            .Property(p => p.StudentId)
-            .IsRequired();
-
-        modelBuilder.Entity<ProjectParticipant>()
-            .Property(p => p.ProjectId)
             .IsRequired();
 
         modelBuilder.Entity<Student>()

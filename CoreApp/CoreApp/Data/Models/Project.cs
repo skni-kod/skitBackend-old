@@ -8,5 +8,5 @@ public class Project
 
     public int SectionId { get; set; }
     public virtual Section Section { get; set; }
-    public virtual List<ProjectParticipant>? ProjectParticipant { get; set; }
+    public virtual List<Student>? Students { get; set; }
 }

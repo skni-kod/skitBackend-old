@@ -1,8 +1,10 @@
 ﻿using CoreApp.Data.Dtos;
+using CoreApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreApp.Controllers;
-
+[Route("/api/project")]
+[ApiController]
 public class ProjectController : ControllerBase
 {
     private readonly IProjectService _service;
@@ -41,7 +43,7 @@ public class ProjectController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult Create([FromBody] CreateRoleDto dto)
+    public ActionResult Create([FromBody] CreateProjectDto dto)
     {
         var id = _service.Create(dto);
         return Created($"/api/student/{id}", null);
