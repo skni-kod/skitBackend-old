@@ -63,4 +63,18 @@ public class StudentController : ControllerBase
         _service.Delete(id);
         return NoContent();
     }
+
+    [HttpDelete("{studentId}/role/{projectId}")]
+    public ActionResult DeleteProjectFromStudent([FromRoute] int studentId, [FromRoute] int projectId)
+    {
+        _service.DeleteProjectFromStudent(studentId, projectId);
+        return NoContent();
+    }
+
+    [HttpDelete("{studentId}/project/{roleId}")]
+    public ActionResult DeleteRoleFromStudent([FromRoute] int studentId, [FromRoute] int roleId)
+    {
+        _service.DeleteRoleFromStudent(studentId, roleId);
+        return NoContent();
+    }
 }

@@ -15,6 +15,8 @@ public interface IStudentService
     List<ReadStudentDto> GetAllNoProject();
     void AddProjectToStudent(int studentId, int projectId);
     void AddRoleToStudent(int studentId, int roleId);
+    void DeleteProjectFromStudent(int studentId, int projectId);
+    void DeleteRoleFromStudent(int studentId, int roleId);
 }
 
 public class StudentService : IStudentService
@@ -122,6 +124,44 @@ public class StudentService : IStudentService
 
         student.Roles.Add(role);
 
+        _context.SaveChanges();
+    }
+
+    public void DeleteProjectFromStudent(int studentId, int projectId)
+    {
+        var student = _context
+            .Students
+            .Include(s => s.Projects)
+            .FirstOrDefault(s => s.Id == studentId);
+
+        if(student == null) throw new Exception();
+
+        var project = _context
+            .Projects
+            .FirstOrDefault(p => p.Id == projectId);
+
+        if (project == null) throw new Exception();
+
+        student.Projects.Remove(project);
+        _context.SaveChanges();
+    }
+
+    public void DeleteRoleFromStudent(int studentId, int roleId)
+    {
+        var student = _context
+            .Students
+            .Include(s => s.Roles)
+            .FirstOrDefault(s => s.Id == studentId);
+
+        if (student == null) throw new Exception();
+
+        var role = _context
+            .Roles
+            .FirstOrDefault(r => r.Id == roleId);
+
+        if (role == null) throw new Exception();
+
+        student.Roles.Remove(role);
         _context.SaveChanges();
     }
 }
