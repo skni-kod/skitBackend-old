@@ -5,6 +5,15 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("secret.json", optional: false, reloadOnChange: true);
 var connectionString = builder.Configuration.GetConnectionString("DefaultDatabase");
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "_MyAllowSubdomainPolicy",
+        builder =>
+        {
+            builder.AllowAnyOrigin();
+        });
+});
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -28,6 +37,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("_MyAllowSubdomainPolicy");
 
 app.UseAuthorization();
 
