@@ -45,7 +45,7 @@ namespace CoreApp.Migrations
 
                     b.HasIndex("SectionId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("CoreApp.Data.Models.Role", b =>
@@ -66,7 +66,7 @@ namespace CoreApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("CoreApp.Data.Models.Section", b =>
@@ -87,7 +87,7 @@ namespace CoreApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sections");
+                    b.ToTable("Sections", (string)null);
                 });
 
             modelBuilder.Entity("CoreApp.Data.Models.Student", b =>
@@ -129,7 +129,7 @@ namespace CoreApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("ProjectStudent", b =>
@@ -144,7 +144,7 @@ namespace CoreApp.Migrations
 
                     b.HasIndex("StudentsId");
 
-                    b.ToTable("ProjectStudent");
+                    b.ToTable("ProjectStudent", (string)null);
                 });
 
             modelBuilder.Entity("RoleStudent", b =>
@@ -159,7 +159,7 @@ namespace CoreApp.Migrations
 
                     b.HasIndex("StudentsId");
 
-                    b.ToTable("RoleStudent");
+                    b.ToTable("RoleStudent", (string)null);
                 });
 
             modelBuilder.Entity("CoreApp.Data.Models.Project", b =>

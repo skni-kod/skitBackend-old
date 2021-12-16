@@ -46,6 +46,6 @@ public class ProjectController : ControllerBase
     public ActionResult Create([FromBody] CreateProjectDto dto)
     {
         var id = _service.Create(dto);
-        return Created($"/api/student/{id}", null);
+        return Created($"/api/project/{id}", null);
     }
 }

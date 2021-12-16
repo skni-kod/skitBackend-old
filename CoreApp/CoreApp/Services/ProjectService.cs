@@ -28,6 +28,7 @@ public class ProjectService : IProjectService
     {
         var projects = _context
             .Projects
+            .Include(p => p.Section)
             .ToList();
 
         if (projects == null) throw new Exception();
@@ -53,6 +54,7 @@ public class ProjectService : IProjectService
     {
         var project = _context
             .Projects
+            .Include(p => p.Section)
             .FirstOrDefault(r => r.Id == id);
 
         if (project == null) throw new Exception();
@@ -65,6 +67,14 @@ public class ProjectService : IProjectService
     public int Create(CreateProjectDto dto)
     {
         var project = _mapper.Map<Project>(dto);
+
+        var section = _context
+            .Sections
+            .FirstOrDefault(s => s.Id == project.SectionId);
+
+        if(section == null) throw new Exception();
+
+        project.Section = section;
 
         _context
             .Projects

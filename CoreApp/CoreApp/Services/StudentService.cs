@@ -43,7 +43,7 @@ public class StudentService : IStudentService
     {
         var student = _context
             .Students
-            //.Include(r => r.Role)
+            //.Include(r => r.Roles)
             //.Include(r => r.Projects)
             .FirstOrDefault(s => s.Id == id);
 
@@ -57,7 +57,7 @@ public class StudentService : IStudentService
     {
         var students = _context
             .Students
-            //.Include(r => r.Role)
+            //.Include(r => r.Roles)
             //.Include(r => r.Projects)
             .ToList();
 
@@ -112,6 +112,7 @@ public class StudentService : IStudentService
     {
         var student = _context
             .Students
+            .Include(s => s.Roles)
             .FirstOrDefault(s => s.Id == studentId);
 
         if (student == null) throw new Exception();

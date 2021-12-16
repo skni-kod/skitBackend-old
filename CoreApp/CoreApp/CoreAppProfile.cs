@@ -20,8 +20,7 @@ public class CoreAppProfile : Profile
 
         CreateMap<CreateSectionDto, Section>();
 
-        CreateMap<Project, ReadProjectDto>()
-            .ForMember(p => p.Section, c => c.MapFrom(s => s.Section.Title));
+        CreateMap<Project, ReadProjectDto>();
 
         CreateMap<CreateProjectDto, Project>();
     }
