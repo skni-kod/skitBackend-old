@@ -13,7 +13,7 @@ builder.Services.AddCors(options =>
         {
             builder.AllowAnyHeader()
                 .AllowAnyMethod()
-                .WithOrigins("http://localhost:8080");
+                .WithOrigins("http://localhost:8080", "http://localhost:8081");
         });
 });
 // Add services to the container.
