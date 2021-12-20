@@ -8,12 +8,12 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultDatabas
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: "_MyAllowSubdomainPolicy",
+    options.AddPolicy(name: "MyAllowSpecificOrigins",
         builder =>
         {
-            builder.AllowAnyHeader()
-                .AllowAnyMethod()
-                .WithOrigins("http://localhost:8080", "http://localhost:8081");
+            builder.WithOrigins("http://localhost:8080", "http://localhost:8081")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
         });
 });
 // Add services to the container.
@@ -40,7 +40,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("_MyAllowSubdomainPolicy");
+app.UseCors("MyAllowSpecificOrigins");
 
 app.UseAuthorization();
 
