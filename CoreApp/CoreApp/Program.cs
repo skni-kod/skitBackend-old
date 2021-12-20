@@ -11,7 +11,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "_MyAllowSubdomainPolicy",
         builder =>
         {
-            builder.AllowAnyOrigin();
+            builder.AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithOrigins("http://localhost:8080");
         });
 });
 // Add services to the container.
