@@ -13,6 +13,8 @@ public class CoreAppDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<Section> Sections { get; set; }
     public DbSet<Student> Students { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<UserRole> UserRoles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -53,6 +55,15 @@ public class CoreAppDbContext : DbContext
         modelBuilder.Entity<Role>()
             .Property(r => r.Title)
             .HasMaxLength(255)
+            .IsRequired();
+
+        modelBuilder.Entity<User>()
+            .Property(u => u.Username)
+            .HasMaxLength(255)
+            .IsRequired();
+
+        modelBuilder.Entity<User>()
+            .Property(u => u.PasswordHash)
             .IsRequired();
     }
 
