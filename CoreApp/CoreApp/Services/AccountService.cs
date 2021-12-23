@@ -1,4 +1,6 @@
-﻿namespace CoreApp.Services;
+﻿using CoreApp.Data.Dtos;
+
+namespace CoreApp.Services;
 
 public interface IAccountService
 {
@@ -11,6 +13,16 @@ public class AccountService : IAccountService
     public AccountService()
     {
         
-    }    
+    }
+
+    public void RegisterUser(RegisterUserDto dto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string GenerateJwt(LoginDto dto)
+    {
+        throw new NotImplementedException();
+    }
 }
 
