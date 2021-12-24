@@ -13,6 +13,6 @@ public class ReadStudentDto
     public string? StudiesTag { get; set; }
     public string? Description { get; set; }
 
-    public virtual List<ReadRoleDto>? Roles { get; set; }
-    public virtual List<ReadProjectDto>? Projects { get; set; }
+    //public virtual List<ReadRoleDto>? Roles { get; set; }
+    //public virtual List<ReadProjectDto>? Projects { get; set; }
 }   
