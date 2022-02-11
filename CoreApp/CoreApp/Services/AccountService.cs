@@ -20,7 +20,6 @@ public interface IAccountService
 public class AccountService : IAccountService
 {
     private readonly CoreAppDbContext _context;
-    private readonly IMapper _mapper;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly AuthenticationSettings _authenticationSettings;
 

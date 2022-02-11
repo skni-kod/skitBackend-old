@@ -2,6 +2,7 @@ using System.Text;
 using CoreApp.Data;
 using CoreApp.Data.Models;
 using CoreApp.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -13,22 +14,22 @@ var authenticationSettings = new AuthenticationSettings();
 
 builder.Configuration.GetSection("Authorization").Bind(authenticationSettings);
 builder.Services.AddSingleton(authenticationSettings);
-builder.Services.AddAuthentication(option =>
-{
-    option.DefaultAuthenticateScheme = "Bearer";
-    option.DefaultScheme = "Bearer";
-    option.DefaultChallengeScheme = "Bearer";
-}).AddJwtBearer(cfg =>
-{
-    cfg.RequireHttpsMetadata = false;
-    cfg.SaveToken = true;
-    cfg.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidIssuer = authenticationSettings.JwtIssuer,
-        ValidAudience = authenticationSettings.JwtIssuer,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
-    };
-});
+//builder.Services.AddAuthentication(option =>
+//{
+//    option.DefaultAuthenticateScheme = "Bearer";
+//    option.DefaultScheme = "Bearer";
+//    option.DefaultChallengeScheme = "Bearer";
+//}).AddJwtBearer(cfg =>
+//{
+//    cfg.RequireHttpsMetadata = false;
+//    cfg.SaveToken = true;
+//    cfg.TokenValidationParameters = new TokenValidationParameters
+//    {
+//        ValidIssuer = authenticationSettings.JwtIssuer,
+//        ValidAudience = authenticationSettings.JwtIssuer,
+//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
+//    };
+//});
 
 builder.Services.AddCors(options =>
 {
@@ -52,6 +53,8 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<ISectionService, SectionService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 var app = builder.Build();
 
