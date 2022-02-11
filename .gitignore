@@ -275,4 +275,3 @@ __pycache__/
 # End of https://www.toptal.com/developers/gitignore/api/aspnetcore
 
 secret.json
-CoreApp/CoreApp/secret.json
