@@ -37,7 +37,7 @@ public class AccountService : IAccountService
             Username = dto.Username,
             FirstName = dto.FirstName,
             LastName = dto.LastName,
-            UserRoleId = dto.UserRoleId
+            UserRoleId = 0
         };
 
         var hashedPassword = _passwordHasher.HashPassword(newUser, dto.Password);

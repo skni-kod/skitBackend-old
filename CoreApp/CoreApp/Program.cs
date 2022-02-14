@@ -14,22 +14,22 @@ var authenticationSettings = new AuthenticationSettings();
 
 builder.Configuration.GetSection("Authorization").Bind(authenticationSettings);
 builder.Services.AddSingleton(authenticationSettings);
-//builder.Services.AddAuthentication(option =>
-//{
-//    option.DefaultAuthenticateScheme = "Bearer";
-//    option.DefaultScheme = "Bearer";
-//    option.DefaultChallengeScheme = "Bearer";
-//}).AddJwtBearer(cfg =>
-//{
-//    cfg.RequireHttpsMetadata = false;
-//    cfg.SaveToken = true;
-//    cfg.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidIssuer = authenticationSettings.JwtIssuer,
-//        ValidAudience = authenticationSettings.JwtIssuer,
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
-//    };
-//});
+builder.Services.AddAuthentication(option =>
+{
+    option.DefaultAuthenticateScheme = "Bearer";
+    option.DefaultChallengeScheme = "Bearer";
+    option.DefaultScheme = "Bearer";
+}).AddJwtBearer("JWT",cfg =>
+{
+    cfg.RequireHttpsMetadata = false;
+    cfg.SaveToken = true;
+    cfg.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = authenticationSettings.JwtIssuer,
+        ValidAudience = authenticationSettings.JwtIssuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
+    };
+});
 
 builder.Services.AddCors(options =>
 {
@@ -41,6 +41,7 @@ builder.Services.AddCors(options =>
                 .AllowAnyMethod();
         });
 });
+
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
