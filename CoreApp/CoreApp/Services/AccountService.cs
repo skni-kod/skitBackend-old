@@ -58,7 +58,7 @@ public class AccountService : IAccountService
 
         var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
 
-        if (result != PasswordVerificationResult.Failed) throw new Exception();
+        if (result == PasswordVerificationResult.Failed) throw new Exception();
 
         var claims = new List<Claim>()
         {
