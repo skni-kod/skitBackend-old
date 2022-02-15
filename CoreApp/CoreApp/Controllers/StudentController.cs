@@ -36,25 +36,11 @@ public class StudentController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
-    public ActionResult CreateStudent([FromBody]CreateStudentDto dto)
+    [HttpPut("{id}")]
+    public ActionResult PutStudent([FromRoute] int id, [FromBody]CreateStudentDto dto)
     {
-        var id = _service.Create(dto);
-        return Created($"/api/student/{id}", null);
-    }
-
-    [HttpPost("{studentId}/project/{projectId}")]
-    public ActionResult AddProjectToStudent([FromRoute] int studentId, [FromRoute] int projectId)
-    {
-        _service.AddProjectToStudent(studentId, projectId);
-        return NoContent();
-    }
-
-    [HttpPost("{studentId}/role/{roleId}")]
-    public ActionResult AddRoleToStudent([FromRoute] int studentId, [FromRoute] int roleId)
-    {
-        _service.AddRoleToStudent(studentId, roleId);
-        return NoContent();
+        _service.PutStudent(id, dto);
+        return Ok();
     }
 
     [HttpDelete("{id}")]
@@ -75,6 +61,27 @@ public class StudentController : ControllerBase
     public ActionResult DeleteRoleFromStudent([FromRoute] int studentId, [FromRoute] int roleId)
     {
         _service.DeleteRoleFromStudent(studentId, roleId);
+        return NoContent();
+    }
+
+    [HttpPost]
+    public ActionResult CreateStudent([FromBody]CreateStudentDto dto)
+    {
+        var id = _service.Create(dto);
+        return Created($"/api/student/{id}", null);
+    }
+
+    [HttpPost("{studentId}/project/{projectId}")]
+    public ActionResult AddProjectToStudent([FromRoute] int studentId, [FromRoute] int projectId)
+    {
+        _service.AddProjectToStudent(studentId, projectId);
+        return NoContent();
+    }
+
+    [HttpPost("{studentId}/role/{roleId}")]
+    public ActionResult AddRoleToStudent([FromRoute] int studentId, [FromRoute] int roleId)
+    {
+        _service.AddRoleToStudent(studentId, roleId);
         return NoContent();
     }
 }

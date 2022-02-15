@@ -8,15 +8,16 @@ namespace CoreApp.Services;
 
 public interface IStudentService
 {
-    public int Create(CreateStudentDto dto);
-    public ReadStudentDto GetById(int id);
-    public IEnumerable<ReadStudentDto> GetAll();
+    int Create(CreateStudentDto dto);
+    ReadStudentDto GetById(int id);
+    IEnumerable<ReadStudentDto> GetAll();
+    void PutStudent(int id, CreateStudentDto dto);
     void Delete(int id);
     List<ReadStudentDto> GetAllNoProject();
-    void AddProjectToStudent(int studentId, int projectId);
-    void AddRoleToStudent(int studentId, int roleId);
     void DeleteProjectFromStudent(int studentId, int projectId);
     void DeleteRoleFromStudent(int studentId, int roleId);
+    void AddProjectToStudent(int studentId, int projectId);
+    void AddRoleToStudent(int studentId, int roleId);
 }
 
 public class StudentService : IStudentService
@@ -63,6 +64,19 @@ public class StudentService : IStudentService
 
         var result = _mapper.Map<IEnumerable<ReadStudentDto>>(students);
         return result;
+    }
+
+    public void PutStudent(int id, CreateStudentDto dto)
+    {
+        var student = _context
+            .Students
+            .FirstOrDefault(s => s.Id == id);
+
+        if (student == null) throw new Exception();
+
+        _mapper.Map(dto, student);
+
+        _context.SaveChanges();
     }
 
     public void Delete(int id)
