@@ -29,10 +29,24 @@ public class SectionController : ControllerBase
     }
 
     [HttpGet("{id}/project")]
-    public ActionResult<List<ReadProjectDto>> GetAllProjects([FromRoute] int id)
+    public ActionResult<List<ReadSectionDto>> GetAllSections([FromRoute] int id)
     {
-        var result = _service.GetAllProjects(id);
+        var result = _service.GetAllSections(id);
         return Ok(result);
+    }
+
+    [HttpPut("{id}")]
+    public ActionResult PutSection([FromRoute] int id, [FromBody] CreateSectionDto dto)
+    {
+        _service.PutSection(id, dto);
+        return Ok();
+    }
+
+    [HttpPatch("{id}")]
+    public ActionResult PatchSection([FromRoute] int id, [FromBody] CreateSectionDto dto)
+    {
+        _service.PatchSection(id, dto);
+        return Ok();
     }
 
     [HttpDelete("{id}")]

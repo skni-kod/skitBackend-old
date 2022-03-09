@@ -9,6 +9,8 @@ public interface IRoleService
 {
     List<ReadRoleDto> GetAll();
     public ReadRoleDto GetById(int id);
+    public void PutRole(int id, CreateRoleDto dto);
+    public void PatchRole(int id, CreateRoleDto dto);
     public void Delete(int id);
     public int Create(CreateRoleDto dto);
     List<ReadStudentDto> GetAllStudents(int id);
@@ -88,6 +90,32 @@ public class RoleService : IRoleService
         var result = _mapper.Map<List<ReadStudentDto>>(students);
 
         return result;
+    }
+
+    public void PutRole(int id, CreateRoleDto dto)
+    {
+        var role = _context
+            .Roles
+            .FirstOrDefault(r => r.Id == id);
+
+        if (role == null) throw new Exception();
+
+        _mapper.Map(dto, role);
+
+        _context.SaveChanges();
+    }
+
+    public void PatchRole(int id, CreateRoleDto dto)
+    {
+        var role = _context
+            .Roles
+            .FirstOrDefault(r => r.Id == id);
+
+        if (role == null) throw new Exception();
+
+        _mapper.Map(dto, role);
+
+        _context.SaveChanges();
     }
 }
 

@@ -8,10 +8,12 @@ namespace CoreApp.Services;
 public interface ISectionService
 {
     public List<ReadSectionDto> GetAll();
+    public void PutSection(int id, CreateSectionDto dto);
+    public void PatchSection(int id, CreateSectionDto dto);
     public void Delete(int id);
     public ReadSectionDto GetById(int id);
     public int Create(CreateSectionDto dto);
-    List<ReadProjectDto> GetAllProjects(int id);
+    List<ReadProjectDto> GetAllSections(int id);
 }
 
 public class SectionService : ISectionService
@@ -74,7 +76,7 @@ public class SectionService : ISectionService
         return section.Id;
     }
 
-    public List<ReadProjectDto> GetAllProjects(int id)
+    public List<ReadProjectDto> GetAllSections(int id)
     {
         var section = _context
             .Sections
@@ -88,5 +90,31 @@ public class SectionService : ISectionService
         var result = _mapper.Map<List<ReadProjectDto>>(projects);
 
         return result;
+    }
+
+    public void PutSection(int id, CreateSectionDto dto)
+    {
+        var project = _context
+            .Projects
+            .FirstOrDefault(p => p.Id == id);
+
+        if (project == null) throw new Exception();
+
+        _mapper.Map(dto, project);
+
+        _context.SaveChanges();
+    }
+
+    public void PatchSection(int id, CreateSectionDto dto)
+    {
+        var project = _context
+            .Projects
+            .FirstOrDefault(p => p.Id == id);
+
+        if (project == null) throw new Exception();
+
+        _mapper.Map(dto, project);
+
+        _context.SaveChanges();
     }
 }

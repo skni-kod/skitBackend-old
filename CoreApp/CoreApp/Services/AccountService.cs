@@ -35,8 +35,6 @@ public class AccountService : IAccountService
         var newUser = new User()
         {
             Username = dto.Username,
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
             UserRoleId = 0
         };
 
@@ -63,7 +61,6 @@ public class AccountService : IAccountService
         var claims = new List<Claim>()
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
             new Claim(ClaimTypes.Role, $"{user.UserRole.Name}")
         };
 

@@ -12,6 +12,7 @@ public interface IStudentService
     ReadStudentDto GetById(int id);
     IEnumerable<ReadStudentDto> GetAll();
     void PutStudent(int id, CreateStudentDto dto);
+    void PatchStudent(int id, CreateStudentDto dto);
     void Delete(int id);
     List<ReadStudentDto> GetAllNoProject();
     void DeleteProjectFromStudent(int studentId, int projectId);
@@ -60,13 +61,27 @@ public class StudentService : IStudentService
             .Students
             //.Include(r => r.Roles)
             //.Include(r => r.Projects)
-            .ToList();
+            .ToList()
+            .OrderBy(s => s.Id);
 
         var result = _mapper.Map<IEnumerable<ReadStudentDto>>(students);
         return result;
     }
 
     public void PutStudent(int id, CreateStudentDto dto)
+    {
+        var student = _context
+            .Students
+            .FirstOrDefault(s => s.Id == id);
+
+        if (student == null) throw new Exception();
+
+        _mapper.Map(dto, student);
+
+        _context.SaveChanges();
+    }
+
+    public void PatchStudent(int id, CreateStudentDto dto)
     {
         var student = _context
             .Students

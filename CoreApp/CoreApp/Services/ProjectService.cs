@@ -9,6 +9,8 @@ public interface IProjectService
 {
     List<ReadProjectDto> GetAll();
     public ReadProjectDto GetById(int id);
+    public void PutProject(int id, CreateProjectDto dto);
+    public void PatchProject(int id, CreateProjectDto dto);
     public void Delete(int id);
     public int Create(CreateProjectDto dto);
     List<ReadStudentDto> GetAllStudents(int id);
@@ -98,5 +100,27 @@ public class ProjectService : IProjectService
         var result = _mapper.Map<List<ReadStudentDto>>(students);
 
         return result;
+    }
+
+    public void PutProject(int id, CreateProjectDto dto)
+    {
+        var project = _context
+            .Projects
+            .FirstOrDefault(p=>p.Id == id);
+
+        if(project == null) throw new Exception();
+
+        _context.SaveChanges();
+    }
+
+    public void PatchProject(int id, CreateProjectDto dto)
+    {
+        var project = _context
+            .Projects
+            .FirstOrDefault(p => p.Id == id);
+
+        if (project == null) throw new Exception();
+
+        _context.SaveChanges();
     }
 }

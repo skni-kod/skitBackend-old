@@ -1,4 +1,4 @@
-﻿using CoreApp.Data.Dtos;
+﻿ using CoreApp.Data.Dtos;
 using CoreApp.Data.Models;
 using CoreApp.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +40,13 @@ public class StudentController : ControllerBase
     public ActionResult PutStudent([FromRoute] int id, [FromBody]CreateStudentDto dto)
     {
         _service.PutStudent(id, dto);
+        return Ok();
+    }
+
+    [HttpPatch("{id}")]
+    public ActionResult PatchStudent([FromRoute] int id, [FromBody] CreateStudentDto dto)
+    {
+        _service.PatchStudent(id, dto);
         return Ok();
     }
 

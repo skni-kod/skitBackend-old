@@ -35,6 +35,20 @@ public class RoleController : ControllerBase
         return Ok(result);
     }
 
+    [HttpPut("{id}")]
+    public ActionResult PutRole([FromRoute] int id, [FromBody] CreateRoleDto dto)
+    {
+        _service.PutRole(id, dto);
+        return Ok();
+    }
+
+    [HttpPatch("{id}")]
+    public ActionResult PatchRole([FromRoute] int id, [FromBody] CreateRoleDto dto)
+    {
+        _service.PatchRole(id, dto);
+        return Ok();
+    }
+
     [HttpDelete("{id}")]
     public ActionResult Delete([FromRoute] int id)
     {

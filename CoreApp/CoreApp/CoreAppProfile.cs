@@ -8,17 +8,20 @@ public class CoreAppProfile : Profile
 {
     public CoreAppProfile()
     {
-        CreateMap<CreateStudentDto, Student>();
+        CreateMap<CreateStudentDto, Student>()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != srcMember));
 
         CreateMap<Student, ReadStudentDto>();
 
         CreateMap<Role, ReadRoleDto>();
 
-        CreateMap<CreateRoleDto, Role>();
+        CreateMap<CreateRoleDto, Role>()
+            .ForAllMembers(opts=>opts.Condition((src, dest, srcMember)=> srcMember != srcMember));
 
         CreateMap<Section, ReadSectionDto>();
 
-        CreateMap<CreateSectionDto, Section>();
+        CreateMap<CreateSectionDto, Section>()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != srcMember));
 
         CreateMap<Project, ReadProjectDto>();
 

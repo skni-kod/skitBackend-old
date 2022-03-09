@@ -35,6 +35,20 @@ public class ProjectController : ControllerBase
         return Ok(result);
     }
 
+    [HttpPut("{id}")]
+    public ActionResult PutProject([FromRoute] int id, [FromBody] CreateProjectDto dto)
+    {
+        _service.PutProject(id, dto);
+        return Ok();
+    }
+
+    [HttpPatch("{id}")]
+    public ActionResult PatchProject([FromRoute] int id, [FromBody] CreateProjectDto dto)
+    {
+        _service.PatchProject(id, dto);
+        return Ok();
+    }
+
     [HttpDelete("{id}")]
     public ActionResult Delete([FromRoute] int id)
     {
