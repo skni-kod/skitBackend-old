@@ -1,4 +1,4 @@
-namespace CoreApp
+namespace skitBackend
 {
     public class WeatherForecast
     {

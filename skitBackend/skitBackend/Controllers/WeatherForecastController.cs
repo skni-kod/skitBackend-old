@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace CoreApp.Controllers
+namespace skitBackend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
