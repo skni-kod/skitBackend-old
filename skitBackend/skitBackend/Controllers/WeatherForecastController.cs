@@ -1,3 +1,5 @@
+using System.Linq;
+using Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace skitBackend.Controllers
@@ -12,10 +14,12 @@ namespace skitBackend.Controllers
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ApiDbContext _context;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, ApiDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
