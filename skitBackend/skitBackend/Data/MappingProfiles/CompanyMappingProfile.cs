@@ -11,6 +11,7 @@ namespace skitBackend.Data.MappingProfiles
             CreateMap<Company, CompanyDto>();
             CreateMap<Address, AddressDto>();
             CreateMap<Technology, TechnologyDto>();
+            CreateMap<Company, CompaniesGeneralDTO>();
         }
     }
 }
