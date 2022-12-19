@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using skitBackend.Data.Models.Dto;
 using skitBackend.Services;
 
@@ -20,6 +19,13 @@ namespace skitBackend.Controllers
         {
             _accountService.RegisterUser(registerUserDto);
             return Ok();
+        }
+
+        [HttpPost("login")]
+        public ActionResult LoginUser([FromBody]LoginUserDto loginUserDto)
+        {
+            var token = _accountService.LoginUser(loginUserDto);
+            return Ok(token);
         }
     }
 }
