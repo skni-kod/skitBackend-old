@@ -1,5 +1,5 @@
-﻿using Data;
-using FluentValidation;
+﻿using FluentValidation;
+using Data;
 using skitBackend.Data.Models.Dto;
 
 namespace skitBackend.Data.Models.Validators
@@ -10,9 +10,7 @@ namespace skitBackend.Data.Models.Validators
         {
             RuleFor(x => x.Email)
                 .NotEmpty()
-                .EmailAddress();
-
-            RuleFor(x => x.Email)
+                .EmailAddress()
                 .Custom((email, context) =>
                 {
                     var emailInUse = apiDbContext.Users.Any(user => user.Email == email);
