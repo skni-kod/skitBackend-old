@@ -1,10 +1,6 @@
-﻿using AutoMapper;
-using Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using Data.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using skitBackend.Data.Models.Dto;
+using skitBackend.Services;
 
 namespace skitBackend.Controllers
 {
@@ -13,44 +9,27 @@ namespace skitBackend.Controllers
     public class CompanyController : ControllerBase
     {
         //downloading resources from the db
-        private readonly ApiDbContext _dbContext;
-        private readonly IMapper _mapper;
+        private readonly ICompanyService _companyService;
 
-        public CompanyController(ApiDbContext dbContext, IMapper mapper)
+        public CompanyController(ICompanyService companyService)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
+               _companyService= companyService;
         }
 
-/*        [HttpGet]
-        public ActionResult<IEnumerable<CompanyDto>> GetAll()
-        {
-            var companyData = _dbContext.Companies
-                .Include(c => c.Addresses)
-                .Include(c => c.Technologies)
-                .ToList();
+        //[HttpGet]
+        //public ActionResult<IEnumerable<CompanyDto>> GetAll()
+        //{
+        //    var companyDataDtos = _companyService.GetAll();
 
-            var companyDataDtos = _mapper.Map<List<CompanyDto>>(companyData);
-
-            return Ok(companyDataDtos);
-        }*/
+        //    return Ok(companyDataDtos);
+        //}
 
         [HttpGet("{id}")]
         public ActionResult<IEnumerable<Company>> GetSpecific([FromRoute]int id)
         {
-            var particularCompanies = _dbContext.Companies
-                .Include(c => c.Addresses)
-                .Include(c => c.Technologies)
-                .FirstOrDefault(company => company.Id == id);
-            
-            if(particularCompanies is null) 
-            { 
-                return NotFound(); 
-            }
+            var particularCompanies = _companyService.GetById(id);
 
-            var particularCompaniesDto = _mapper.Map<CompanyDto>(particularCompanies);
-
-            return Ok(particularCompaniesDto);
+            return Ok(particularCompanies);
         }
 
 
