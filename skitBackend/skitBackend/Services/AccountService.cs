@@ -16,6 +16,8 @@ namespace skitBackend.Services
     {
         void RegisterUser(RegisterUserDto dto);
         string LoginUser(LoginUserDto dto);
+        void DeleteUser(int id);
+        void EditUser(EditUserDto editUserDto);
     }
     
     public class AccountService : IAccountService
@@ -60,10 +62,39 @@ namespace skitBackend.Services
             if (result == PasswordVerificationResult.Failed)
                 throw new BadRequestException("Wrong username or password!");
 
-            return GenerateJwt(user);
+            return _GenerateJwt(user);
         }
 
-        public string GenerateJwt(User user)
+        public void DeleteUser(int id)
+        {
+            var user = _dbContext.Users
+                .FirstOrDefault(user => user.Id == id);
+
+            if(user is null)
+                throw new NotFoundException("User not found");
+
+            user.IsDeleted = true;
+            _dbContext.Users.Update(user);
+            _dbContext.SaveChanges();
+        }
+
+        public void EditUser(EditUserDto editUserDto) 
+        {
+            var user = _dbContext.Users
+                .FirstOrDefault(user => user.Id == editUserDto.Id);
+
+            if(user is null)
+                throw new NotFoundException("User not found");
+
+            user.Nickname = editUserDto.Nickname ?? user.Nickname;
+            user.DiscordNickname = editUserDto.DiscordNickname ?? user.DiscordNickname;
+            user.Email = editUserDto.Email ?? user.Email;
+
+            _dbContext.Users.Update(user);
+            _dbContext.SaveChanges();
+        }
+
+        private string _GenerateJwt(User user)
         {
             var claims = new List<Claim>()
             {

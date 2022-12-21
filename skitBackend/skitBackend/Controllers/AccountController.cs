@@ -27,5 +27,19 @@ namespace skitBackend.Controllers
             var token = _accountService.LoginUser(loginUserDto);
             return Ok(token);
         }
+
+        [HttpPut("delete/{id}")]
+        public ActionResult DeleteUser([FromRoute] int id)
+        {
+            _accountService.DeleteUser(id);
+            return Ok("Deleted");
+        }
+
+        [HttpPut("edit")]
+        public ActionResult EditUser([FromBody] EditUserDto editUserDto)
+        {
+            _accountService.EditUser(editUserDto);
+            return Ok();
+        }
     }
 }
