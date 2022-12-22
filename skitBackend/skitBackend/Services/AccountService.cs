@@ -9,6 +9,8 @@ using Data;
 using Data.Models;
 using skitBackend.Data.Models.Dto;
 using skitBackend.Exceptions;
+using Microsoft.AspNetCore.Authorization;
+using skitBackend.Authorization;
 
 namespace skitBackend.Services
 {
@@ -16,7 +18,7 @@ namespace skitBackend.Services
     {
         void RegisterUser(RegisterUserDto dto);
         string LoginUser(LoginUserDto dto);
-        void DeleteUser(int id);
+        void DeleteUser();
         void EditUser(EditUserDto editUserDto);
     }
     
@@ -25,12 +27,16 @@ namespace skitBackend.Services
         private readonly ApiDbContext _dbContext;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly AuthenticationSettings _authenticationSettings;
+        private readonly IAuthorizationService _authorizationService;
+        private readonly IUserContextService _userContextService;
 
-        public AccountService(ApiDbContext dbContext, IPasswordHasher<User> passwordHasher, AuthenticationSettings authenticationSettings) 
+        public AccountService(ApiDbContext dbContext, IPasswordHasher<User> passwordHasher, AuthenticationSettings authenticationSettings, IAuthorizationService authorizationService, IUserContextService userContextService) 
         {
             _dbContext = dbContext;
             _passwordHasher = passwordHasher;
             _authenticationSettings = authenticationSettings;
+            _authorizationService = authorizationService;
+            _userContextService = userContextService;
         }
 
         public void RegisterUser(RegisterUserDto registerUserDto) 
@@ -65,13 +71,21 @@ namespace skitBackend.Services
             return _GenerateJwt(user);
         }
 
-        public void DeleteUser(int id)
+        public void DeleteUser()
         {
             var user = _dbContext.Users
-                .FirstOrDefault(user => user.Id == id);
+                .FirstOrDefault(user => user.Id == _userContextService.GetUserId);
 
             if(user is null)
                 throw new NotFoundException("User not found");
+
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, user,
+                new ResourceOperationRequeirement(ResourceOperation.Delete)).Result;
+
+            if(!authorizationResult.Succeeded)
+            {
+                throw new ForbidException();
+            }
 
             user.IsDeleted = true;
             _dbContext.Users.Update(user);

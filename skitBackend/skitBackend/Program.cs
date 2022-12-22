@@ -2,11 +2,13 @@ using Data;
 using Data.Models;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NLog.Web;
 using skitBackend;
+using skitBackend.Authorization;
 using skitBackend.Data.Models.Dto;
 using skitBackend.Data.Models.Validators;
 using skitBackend.Data.Seeders;
@@ -55,6 +57,9 @@ var authenticationSettings = new AuthenticationSettings();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 #endregion
 
+#region AddAuthorization
+builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
+#endregion
 
 // Add services to the container.
 builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ApiDbContext>(opt => opt.UseNpgsql(connectionString));
@@ -67,8 +72,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<CompanySeeder>();
 //Add scoped of automapper (QuSZo)
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IUserContextService, UserContextService>();
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
 builder.Services.AddScoped<IValidator<LoginUserDto>, LoginUserDtoValidator>();

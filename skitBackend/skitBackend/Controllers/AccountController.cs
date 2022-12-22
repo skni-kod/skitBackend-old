@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using skitBackend.Data.Models.Dto;
 using skitBackend.Services;
 
@@ -27,11 +28,11 @@ namespace skitBackend.Controllers
             var token = _accountService.LoginUser(loginUserDto);
             return Ok(token);
         }
-
-        [HttpPut("delete/{id}")]
-        public ActionResult DeleteUser([FromRoute] int id)
+        
+        [HttpPut("delete")]
+        public ActionResult DeleteUser()
         {
-            _accountService.DeleteUser(id);
+            _accountService.DeleteUser();
             return Ok("Deleted");
         }
 
