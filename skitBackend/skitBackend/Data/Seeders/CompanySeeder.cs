@@ -1,6 +1,7 @@
 ﻿using Data;
 using Data.Models;
 using skitBackend.Data.Enums;
+using System.Text.Json;
 
 namespace skitBackend.Data.Seeders
 {
@@ -32,9 +33,13 @@ namespace skitBackend.Data.Seeders
                 new Company()
                 {
                     Name = "SII",
-                    WorkLocation = (CompanyWorkLocation)1,
+                    WorkLocation = CompanyWorkLocation.Hybrid,
                     Size = (CompanySize)1,
-                    Links = "https://sii.pl/",
+                    Links = new List<string>()
+                    {
+                        "https://sii.pl/",
+                        "https://sii.com/"
+                    },
                     Comments = new List<Comment>(),
                     Addresses = new List<Address>
                     {
@@ -66,7 +71,10 @@ namespace skitBackend.Data.Seeders
                     Name = "Comarch",
                     WorkLocation = (CompanyWorkLocation)1,
                     Size = (CompanySize)1,
-                    Links = "https://www.comarch.pl/",
+                    Links = new List<string>()
+                    {
+                        "https://www.comarch.pl/"
+                    },
                     Comments = new List<Comment>(),
                     Addresses = new List<Address>
                     {

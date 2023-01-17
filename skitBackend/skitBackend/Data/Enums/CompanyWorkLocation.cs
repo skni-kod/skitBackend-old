@@ -2,8 +2,8 @@
 {
     public enum CompanyWorkLocation
     {
-        Bad = 0,
-        Avarage = 1,
-        Good = 2,
+        Remote = 0,
+        Hybrid = 1,
+        Stationary = 2,
     }
 }
