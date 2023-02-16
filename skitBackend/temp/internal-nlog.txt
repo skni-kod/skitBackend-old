@@ -70,3 +70,11 @@
 2023-02-16 13:23:04.7728 Info Configuration initialized.
 2023-02-16 13:23:04.7728 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.1.0.1480. Product version: 5.1.0+5e6708d4d288e03b3ddf321838ec14907016f1b8. GlobalAssemblyCache: False
 2023-02-16 13:23:04.7728 Info Validating config: TargetNames=exceptions, allfile, ConfigItems=38, FilePath=C:\Users\KuSZo\Documents\Apps\dotNET\1. Git\skni-kod\skitBackend\skitBackend\skitBackend\bin\Debug\net6.0\NLog.config
+2023-02-16 13:33:01.8608 Info Message Template Auto Format enabled
+2023-02-16 13:33:01.8608 Info Loading assembly: NLog.Web.AspNetCore
+2023-02-16 13:33:01.9011 Info Registered target FileTarget(Name=exceptions)
+2023-02-16 13:33:01.9011 Info Registered target FileTarget(Name=allfile)
+2023-02-16 13:33:01.9184 Info Validating config: TargetNames=exceptions, allfile, ConfigItems=38, FilePath=C:\Users\KuSZo\Documents\Apps\dotNET\1. Git\skni-kod\skitBackend\skitBackend\skitBackend\bin\Debug\net6.0\NLog.config
+2023-02-16 13:33:01.9278 Info Configuration initialized.
+2023-02-16 13:33:01.9278 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.1.0.1480. Product version: 5.1.0+5e6708d4d288e03b3ddf321838ec14907016f1b8. GlobalAssemblyCache: False
+2023-02-16 13:33:01.9278 Info Validating config: TargetNames=exceptions, allfile, ConfigItems=38, FilePath=C:\Users\KuSZo\Documents\Apps\dotNET\1. Git\skni-kod\skitBackend\skitBackend\skitBackend\bin\Debug\net6.0\NLog.config

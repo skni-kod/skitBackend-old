@@ -9,5 +9,6 @@ namespace skitBackend.Data.Models.Dto
         public string ConfirmPassword { get; set; }
         public string Nickname { get; set; }
         public string Email { get; set; }
+        public int RoleId { get; set; } = 1;
     }
 }

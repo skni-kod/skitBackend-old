@@ -47,6 +47,7 @@ namespace skitBackend.Services
                 Login = registerUserDto.Login,
                 Nickname = nickname,
                 Email = registerUserDto.Email,
+                RoleId= registerUserDto.RoleId
             };
             newUser.Password = _passwordHasher.HashPassword(newUser, registerUserDto.Password);
 
