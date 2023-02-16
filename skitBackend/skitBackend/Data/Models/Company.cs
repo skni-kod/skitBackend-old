@@ -13,6 +13,8 @@ public class Company
     public CompanySize Size { get; set; }
     [Column(TypeName = "jsonb")]
     public List<string>? Links { get; set; }
+    public int? CreatedByUserId { get; set; }
+    public virtual User CreatedByUser { get; set; }
     public List<Comment>? Comments { get; set; } 
     public List<Address>? Addresses { get; set; }  
     public List<Technology>? Technologies { get; set; }

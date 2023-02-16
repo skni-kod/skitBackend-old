@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Data.Models;
 using skitBackend.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace skitBackend.Controllers
 {
     [ApiController]
-    [Route("[controller]")] 
+    [Route("[controller]")]
     public class CompanyController : ControllerBase
     {
-        //downloading resources from the db
         private readonly ICompanyService _companyService;
 
         public CompanyController(ICompanyService companyService)
@@ -31,7 +31,5 @@ namespace skitBackend.Controllers
 
             return Ok(particularCompanies);
         }
-
-
     }
 }

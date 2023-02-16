@@ -13,7 +13,6 @@ namespace Data
         public DbSet<Company> Companies { get; set; }
         public DbSet<Technology> Technologies { get; set; }
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,12 +34,6 @@ namespace Data
             modelBuilder.Entity<User>()
                 .Property(u => u.Email)
                 .IsRequired();
-            #endregion
-
-            #region RoleEntityBuilder
-            modelBuilder.Entity<Role>()
-            .Property(u => u.Name)
-            .IsRequired();
             #endregion
         }
     }

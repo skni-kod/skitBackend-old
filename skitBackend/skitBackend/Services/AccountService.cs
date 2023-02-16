@@ -19,7 +19,7 @@ namespace skitBackend.Services
     {
         void RegisterUser(RegisterUserDto dto);
         string LoginUser(LoginUserDto dto);
-        void DeleteUser();
+        void DeleteUser(int id);
         void EditUser(EditUserDto editUserDto);
     }
     
@@ -48,7 +48,7 @@ namespace skitBackend.Services
                 Login = registerUserDto.Login,
                 Nickname = nickname,
                 Email = registerUserDto.Email,
-                RoleId= registerUserDto.RoleId
+                UserRole = (Data.Enums.UserRoleEnum)registerUserDto.UserRole
             };
             newUser.Password = _passwordHasher.HashPassword(newUser, registerUserDto.Password);
 
@@ -73,31 +73,33 @@ namespace skitBackend.Services
             return _GenerateJwt(user);
         }
 
-        public void DeleteUser()
+        public void DeleteUser(int id)
         {
-            var user = _dbContext.Users
-                .FirstOrDefault(user => user.Id == _userContextService.GetUserId);
+            var userToDelete = _dbContext.Users
+                .FirstOrDefault(user => user.Id == id);
 
-            if(user is null)
+            if(userToDelete is null)
                 throw new NotFoundException("User not found");
 
-            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, user,
-                new ResourceOperationRequeirement(ResourceOperation.Delete)).Result;
+            var authorizationResult = _authorizationService.AuthorizeAsync(
+                _userContextService.User, 
+                userToDelete, 
+                new UserResourceOperationRequirement(UserResourceOperation.Delete)).Result;
 
             if(!authorizationResult.Succeeded)
             {
                 throw new ForbidException();
             }
 
-            user.IsDeleted = true;
-            _dbContext.Users.Update(user);
+            userToDelete.IsDeleted = true;
+            _dbContext.Users.Update(userToDelete);
             _dbContext.SaveChanges();
         }
 
         public void EditUser(EditUserDto editUserDto) 
         {
             var user = _dbContext.Users
-                .Include(role => role.Role)
+                .Include(role => role.UserRole)
                 .FirstOrDefault(user => user.Id == editUserDto.Id);
 
             if(user is null)
@@ -117,8 +119,8 @@ namespace skitBackend.Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, $"{user.Nickname}"),
+                new Claim(ClaimTypes.Role, $"{(int)user.UserRole}"),
                 new Claim(ClaimTypes.Email, $"{user.Email}"),
-                new Claim(ClaimTypes.Role, $"{user.Role.Name}")
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));

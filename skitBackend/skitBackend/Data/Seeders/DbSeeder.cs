@@ -24,38 +24,9 @@ namespace skitBackend.Data.Seeders
                     _dbContext.Companies.AddRange(companies);
                     _dbContext.SaveChanges();
                 }
-                if (!_dbContext.Roles.Any())
-                {
-                    var roles = GetRoles();
-                    _dbContext.Roles.AddRange(roles);
-                    _dbContext.SaveChanges();
-                }
             }
         }
 
-        private IEnumerable<Role> GetRoles()
-        {
-            var roles = new List<Role>()
-            {
-                new Role()
-                {
-                    Id= 1,
-                    Name = "BusinessUser"
-                },
-                new Role()
-                {
-                    Id= 2,
-                    Name = "Moderator"
-                },
-                new Role()
-                {
-                    Id= 3,
-                    Name = "Admin"
-                }
-            };
-
-            return roles;
-        }
 
         private IEnumerable<Company> GetCompanies()
         {

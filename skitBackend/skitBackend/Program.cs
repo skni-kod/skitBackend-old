@@ -58,7 +58,8 @@ builder.Services.AddScoped<ErrorHandlingMiddleware>();
 #endregion
 
 #region AddAuthorization
-builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, CompanyResourceOperationRequirementHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, UserResourceOperationRequirementHandler>();
 #endregion
 
 // Add services to the container.
