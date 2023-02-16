@@ -11,6 +11,7 @@ using skitBackend.Data.Models.Dto;
 using skitBackend.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using skitBackend.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace skitBackend.Services
 {
@@ -96,6 +97,7 @@ namespace skitBackend.Services
         public void EditUser(EditUserDto editUserDto) 
         {
             var user = _dbContext.Users
+                .Include(role => role.Role)
                 .FirstOrDefault(user => user.Id == editUserDto.Id);
 
             if(user is null)
@@ -115,7 +117,8 @@ namespace skitBackend.Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, $"{user.Nickname}"),
-                new Claim(ClaimTypes.Email, $"{user.Email}")
+                new Claim(ClaimTypes.Email, $"{user.Email}"),
+                new Claim(ClaimTypes.Role, $"{user.Role.Name}")
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
