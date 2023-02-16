@@ -69,7 +69,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Add scoped of seeder (QuSZo)
-builder.Services.AddScoped<CompanySeeder>();
+builder.Services.AddScoped<DbSeeder>();
 //Add scoped of automapper (QuSZo)
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -90,7 +90,7 @@ var app = builder.Build();
 
 //Add configure of seeder (QuSZo)
 var scope = app.Services.CreateScope();
-var seeder = scope.ServiceProvider.GetRequiredService<CompanySeeder>();
+var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
 seeder.Seed();
 
 

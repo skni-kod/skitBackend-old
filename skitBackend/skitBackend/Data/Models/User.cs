@@ -1,4 +1,7 @@
-﻿namespace Data.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using skitBackend.Data.Models;
+
+namespace Data.Models;
 
 public class User
 {
@@ -11,4 +14,6 @@ public class User
     public string? DiscordNickname { get; set; }
     public string Email { get; set; }
     public List<Comment>? Comments { get; set; }
+    public int RoleId { get; set; }
+    public virtual Role Role { get; set; }  
 }
