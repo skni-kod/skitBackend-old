@@ -24,7 +24,8 @@ namespace skitBackend.Data.Models.Validators
                 .NotEmpty()
                 .Custom((login, context) =>
                 {
-                    var loginInUse = apiDbContext.Users.Any(user => user.Login == login);
+                    var loginInUse = apiDbContext.Users.Any(user => user.IsDeleted == false && user.Login == login);
+
                     if(loginInUse)
                     {
                         context.AddFailure("Login", "That login is taken");

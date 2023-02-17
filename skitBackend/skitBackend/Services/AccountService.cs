@@ -59,7 +59,7 @@ namespace skitBackend.Services
         public string LoginUser(LoginUserDto loginUserDto)
         {
             var user = _dbContext.Users
-                .FirstOrDefault(user => user.Login == loginUserDto.Login);
+                .FirstOrDefault(user => user.Login == loginUserDto.Login && user.IsDeleted == false);
 
             if (user is null)
                 throw new BadRequestException("Wrong username or password!");
@@ -76,7 +76,7 @@ namespace skitBackend.Services
         public void DeleteUser(int id)
         {
             var userToDelete = _dbContext.Users
-                .FirstOrDefault(user => user.Id == id);
+                .FirstOrDefault(user => user.Id == id && user.IsDeleted == false);
 
             if(userToDelete is null)
                 throw new NotFoundException("User not found");
@@ -99,11 +99,20 @@ namespace skitBackend.Services
         public void EditUser(EditUserDto editUserDto) 
         {
             var user = _dbContext.Users
-                .Include(role => role.UserRole)
-                .FirstOrDefault(user => user.Id == editUserDto.Id);
+                .FirstOrDefault(user => user.Id == editUserDto.Id && user.IsDeleted == false);
 
             if(user is null)
                 throw new NotFoundException("User not found");
+
+            var authorizationResult = _authorizationService.AuthorizeAsync(
+                _userContextService.User,
+                user,
+                new UserResourceOperationRequirement(UserResourceOperation.Delete)).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbidException();
+            }
 
             user.Nickname = editUserDto.Nickname ?? user.Nickname;
             user.DiscordNickname = editUserDto.DiscordNickname ?? user.DiscordNickname;

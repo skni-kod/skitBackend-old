@@ -40,7 +40,7 @@ namespace skitBackend.Controllers
         public ActionResult EditUser([FromBody] EditUserDto editUserDto)
         {
             _accountService.EditUser(editUserDto);
-            return Ok();
+            return Ok("Edited");
         }
     }
 }
