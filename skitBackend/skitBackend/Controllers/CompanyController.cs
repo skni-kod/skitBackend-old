@@ -4,7 +4,9 @@ using Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using skitBackend.Data.Models;
 using skitBackend.Data.Models.Dto;
+using skitBackend.Wrappers;
 
 namespace skitBackend.Controllers
 {
@@ -23,17 +25,32 @@ namespace skitBackend.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Company>> GetGeneral()
+        public ActionResult<CompaniesGeneralData> GetGeneral([FromQuery] PaginationFilter filter)
         {
-            var CompaniesGeneral = _dbContext.Companies
+
+            var query = _dbContext.Companies
                 .Include(c => c.Addresses)
                 .Include(c => c.Technologies)
+                .AsQueryable();
+                
+            filter.ItemsCount = query.Count();
+
+            var records = query
+                .Skip(filter.Offset)
+                .Take(filter.PageSize)
                 .ToList();
 
-            
-            var CompaniesGeneralDto = _mapper.Map<List<CompaniesGeneralDTO>>(CompaniesGeneral);
+            var CompaniesGeneralDto = _mapper.Map<List<CompaniesGeneralDTO>>(records);
 
-            return Ok(CompaniesGeneralDto);
+            CompaniesGeneralData result = new() 
+            { 
+                Pager = filter,
+                Records = CompaniesGeneralDto
+            };
+
+
+            return Ok(result);
+            
         }
 
 
