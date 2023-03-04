@@ -1,5 +1,6 @@
 ﻿using Data.Models;
 using Microsoft.AspNetCore.Authorization;
+using skitBackend.Data.Enums;
 using System.Security.Claims;
 
 namespace skitBackend.Authorization
@@ -8,20 +9,34 @@ namespace skitBackend.Authorization
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CompanyResourceOperationRequeirement requirement, Company resource)
         {
-            var roleId = context.User.FindFirst(c => c.Type == ClaimTypes.Role).Value;
-            if (int.Parse(roleId) == 3 || int.Parse(roleId) == 2)
+            if (requirement.CompanyResourceOperation == CompanyResourceOperation.Read && resource.IsPublished)
+                context.Succeed(requirement);
+
+            var userId = context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Task.CompletedTask;
+            }
+            
+            if (requirement.CompanyResourceOperation == CompanyResourceOperation.Create)
             {
                 context.Succeed(requirement);
             }
 
-            if (requirement.CompanyResourceOperation == CompanyResourceOperation.Read ||
-                requirement.CompanyResourceOperation == CompanyResourceOperation.Create) 
-            {
-                context.Succeed(requirement);
-            }
-
-            var userId = context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value;
             if (resource.CreatedByUserId == int.Parse(userId))
+            {
+                context.Succeed(requirement);
+            }
+            
+            var roleId = context.User.FindFirst(c => c.Type == ClaimTypes.Role)?.Value;
+
+            if(roleId == null)
+            {
+                return Task.CompletedTask;
+            }
+
+            if (int.Parse(roleId) == (int)UserRoleEnum.Admin || int.Parse(roleId) == (int)UserRoleEnum.Moderator)
             {
                 context.Succeed(requirement);
             }

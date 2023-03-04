@@ -11,7 +11,6 @@ namespace skitBackend.Services
     public interface ICompanyService
     {
         CompanyDto GetById(int id);
-        //IEnumerable<CompanyDto> GetAll();
     }
 
     public class CompanyService : ICompanyService
@@ -27,28 +26,16 @@ namespace skitBackend.Services
 
         public CompanyDto GetById(int id)
         {
-            var particularCompanies = _dbContext.Companies
+            var company = _dbContext.Companies
                 .Include(company => company.Addresses)
                 .Include(company => company.Technologies)
                 .FirstOrDefault(company => company.Id == id);
 
-            if (particularCompanies is null)
+            if (company is null)
                 throw new NotFoundException("Company not found");
 
-            var result = _mapper.Map<CompanyDto>(particularCompanies);
+            var result = _mapper.Map<CompanyDto>(company);
             return result;
         }
-
-        //public IEnumerable<CompanyDto> GetAll()
-        //{
-        //    var companyData = _dbContext.Companies
-        //        .Include(c => c.Addresses)
-        //        .Include(c => c.Technologies)
-        //        .ToList();
-
-        //    var companyDataDtos = _mapper.Map<List<CompanyDto>>(companyData);
-
-        //    return companyDataDtos;
-        //}
     }
 }

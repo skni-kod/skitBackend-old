@@ -5,7 +5,7 @@ using skitBackend.Services;
 
 namespace skitBackend.Controllers
 {
-    [Route("api/account")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {

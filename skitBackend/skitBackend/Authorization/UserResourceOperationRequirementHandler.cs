@@ -7,10 +7,19 @@ namespace skitBackend.Authorization
 {
     public class UserResourceOperationRequirementHandler : AuthorizationHandler<UserResourceOperationRequirement, User>
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, UserResourceOperationRequirement requirement, User userToDelete)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, UserResourceOperationRequirement requirement, User user)
         {
-            if (requirement.UserResourceOperation == UserResourceOperation.Read ||
-                requirement.UserResourceOperation == UserResourceOperation.Create)
+            if (requirement.UserResourceOperation == UserResourceOperation.Read)
+            {
+                context.Succeed(requirement);
+            }
+
+            if(!int.TryParse(context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value, out int loggedUserId))
+            {
+                return Task.CompletedTask;
+            }
+
+            if (user.Id == loggedUserId)
             {
                 context.Succeed(requirement);
             }
@@ -21,16 +30,6 @@ namespace skitBackend.Authorization
             }
 
             if (role == (int)UserRoleEnum.Admin)
-            {
-                context.Succeed(requirement);
-            }
-
-            if(!int.TryParse(context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value, out int loggedUserId))
-            {
-                return Task.CompletedTask;
-            }
-
-            if (userToDelete.Id == loggedUserId)
             {
                 context.Succeed(requirement);
             }

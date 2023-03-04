@@ -18,5 +18,5 @@ public class Company
     public List<Comment>? Comments { get; set; } 
     public List<Address>? Addresses { get; set; }  
     public List<Technology>? Technologies { get; set; }
-
+    public bool IsPublished { get; set; }
 }

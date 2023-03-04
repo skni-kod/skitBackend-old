@@ -16,9 +16,9 @@ namespace skitBackend.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public ClaimsPrincipal User => _httpContextAccessor.HttpContext?.User;
+        public ClaimsPrincipal? User => _httpContextAccessor?.HttpContext?.User;
 
         public int? GetUserId =>
-            User is null ? null : (int?)int.Parse(User.FindFirst(claim => claim.Type == ClaimTypes.NameIdentifier).Value);
+            User is null ? null : int.Parse(User.FindFirst(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value);
     }
 }

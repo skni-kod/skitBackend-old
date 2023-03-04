@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace skitBackend.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("[controller]")]
     public class CompanyController : ControllerBase
     {
         private readonly ICompanyService _companyService;
@@ -16,20 +16,12 @@ namespace skitBackend.Controllers
                _companyService= companyService;
         }
 
-        //[HttpGet]
-        //public ActionResult<IEnumerable<CompanyDto>> GetAll()
-        //{
-        //    var companyDataDtos = _companyService.GetAll();
-
-        //    return Ok(companyDataDtos);
-        //}
-
         [HttpGet("{id}")]
         public ActionResult<IEnumerable<Company>> GetSpecific([FromRoute]int id)
         {
-            var particularCompanies = _companyService.GetById(id);
+            var result = _companyService.GetById(id);
 
-            return Ok(particularCompanies);
+            return Ok(result);
         }
     }
 }
